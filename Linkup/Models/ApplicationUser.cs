@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Linkup.Models
 {
@@ -12,5 +9,7 @@ namespace Linkup.Models
         public string LastName { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }
+        public List<Skill> Skills { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }
