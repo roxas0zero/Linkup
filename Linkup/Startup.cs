@@ -1,6 +1,8 @@
 using Linkup.Data;
 using Linkup.Services;
 using Linkup.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -28,14 +30,9 @@ namespace Linkup
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ApplicationConnectionString")));
-            services.AddScoped<IApplicationUserService, ApplicationUserService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<ISkillService, SkillService>();
-            services.AddScoped<IActiveDirectoryService, ActiveDirectoryService>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddAuthentication(IISServerDefaults.AuthenticationScheme);            
+            services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+
             services.AddControllersWithViews(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -43,12 +40,13 @@ namespace Linkup
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
-            services.AddRazorPages()
-                .AddMicrosoftIdentityUI();
-
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+            services.AddDbContextPool<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ApplicationConnectionString")));
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ISkillService, SkillService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +61,7 @@ namespace Linkup
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
