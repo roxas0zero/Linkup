@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Linkup.Models
 {
     public class ApplicationUser
     {
+        [Key]
         public string CorpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
