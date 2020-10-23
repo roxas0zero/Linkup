@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Linkup.Models
+namespace Linkup.ViewModels.Profile
 {
-    public class ApplicationUser
+    public class ProfileGeneralViewModel
     {
-        [Key]        
         public string Email { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public string Mobile { get; set; }
         public string Department { get; set; }
         public string Team { get; set; }
-        public string Extension { get; set; }        
-        public List<Skill> Skills { get; set; }
-        public List<Interest> Interests { get; set; }
-        public List<Project> Projects { get; set; }
+        public string Extension { get; set; }
     }
 }

@@ -5,7 +5,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Linkup.Models;
 using Linkup.Services.Interfaces;
+using Linkup.ViewModels.Profile;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Linkup.Controllers
 {
@@ -21,21 +23,47 @@ namespace Linkup.Controllers
         [HttpGet]
         public async Task<IActionResult> General()
         {
-            var user = await applicationUserService.GetByEmail(User.Identity.Name);
-
-            if (user == null)
+            var profile = await applicationUserService.GetByEmail(User.Identity.Name);
+            var viewModel = new ProfileGeneralViewModel
             {
-                var newUser = new ApplicationUser
-                {
-                    Email = User.Identity.Name,
-                    FirstName = User.FindFirst(ClaimTypes.GivenName).Value,
-                    LastName = User.FindFirst(ClaimTypes.Surname).Value
-                };
+                Email = profile.Email,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                Mobile = profile.Mobile,
+                Department = profile.Department,
+                Team = profile.Team,
+                Extension = profile.Extension
+            };
+            return View(viewModel);
+        }
 
-                await applicationUserService.Create(newUser);                
+        [HttpGet]
+        public async Task<IActionResult> EditGeneral()
+        {
+            var profile = await applicationUserService.GetByEmail(User.Identity.Name);
+            var viewModel = new ProfileGeneralViewModel
+            {
+                Email = profile.Email,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                Mobile = profile.Mobile,
+                Department = profile.Department,
+                Team = profile.Team,
+                Extension = profile.Extension
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGeneral([Bind("Email,FirstName,LastName,Mobile,Department,Team,Extension")] ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                await applicationUserService.Update(applicationUser);
+                return RedirectToAction(nameof(General));
             }
-
-            return View();
+            return RedirectToAction(nameof(EditGeneral));
         }
     }
 }

@@ -1,30 +1,37 @@
 ﻿using Linkup.Models;
+using Linkup.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Linkup.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IApplicationUserService applicationUserService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IApplicationUserService applicationUserService)
         {
-            _logger = logger;
+            this.applicationUserService = applicationUserService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var user = await applicationUserService.GetByEmail(User.Identity.Name);
 
-        public IActionResult Privacy()
-        {
+            if (user == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    Email = User.Identity.Name,
+                    FirstName = User.FindFirst(ClaimTypes.GivenName).Value,
+                    LastName = User.FindFirst(ClaimTypes.Surname).Value
+                };
+
+                await applicationUserService.Create(newUser);
+            }
+
             return View();
         }
 

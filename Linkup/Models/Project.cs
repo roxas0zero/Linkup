@@ -12,6 +12,7 @@ namespace Linkup.Models
         public DateTime DueDate { get; set; }
         public List<ApplicationUser> Participants { get; set; }
         public List<Skill> NeededSkills { get; set; }
+        public List<Interest> RelatedInterests { get; set; }
         public int Progress { get; set; }
         public Status Status { get; set; }
     }

@@ -9,8 +9,9 @@ namespace Linkup.Services.Interfaces
     public interface IApplicationUserService
     {
         Task Create(ApplicationUser applicationUser);        
-        Task Update(string email, ApplicationUser applicationUser);
+        Task Update(ApplicationUser applicationUser);
         Task<ApplicationUser> GetByEmail(string email);
         Task<List<ApplicationUser>> GetAll();
+        Task<bool> Exists(string email);
     }
 }

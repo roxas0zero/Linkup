@@ -12,6 +12,7 @@ namespace Linkup.Data
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Skill> Skills { get; set; }        
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<Interest> Interests { get; set; }
     }
 }

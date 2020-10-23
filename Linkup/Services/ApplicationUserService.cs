@@ -24,25 +24,16 @@ namespace Linkup.Services
             await applicationDbContext.SaveChangesAsync();
         }
 
-        public async Task Update(string email, ApplicationUser applicationUser)
+        public async Task Update(ApplicationUser applicationUser)
         {
-            var applicationUserFromDb = await applicationDbContext.ApplicationUsers.FindAsync(email);
-
-            if (applicationUserFromDb.Email == applicationUser.Email)
-            {
-                applicationUserFromDb.FirstName = applicationUser.FirstName;
-                applicationUserFromDb.LastName = applicationUser.LastName;
-                applicationUserFromDb.Email = applicationUser.Email;
-                applicationUserFromDb.Mobile = applicationUser.Mobile;
-                applicationUserFromDb.Skills = applicationUser.Skills;
-
-                await applicationDbContext.SaveChangesAsync();
-            }
+            applicationDbContext.Update(applicationUser);
+            await applicationDbContext.SaveChangesAsync();
         }
 
         public async Task<ApplicationUser> GetByEmail(string email)
         {
             return await applicationDbContext.ApplicationUsers
+                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
@@ -52,6 +43,13 @@ namespace Linkup.Services
                 .AsNoTracking()
                 .OrderBy(a => a.Email)
                 .ToListAsync();
+        }
+
+        public async Task<bool> Exists(string email)
+        {
+            return await applicationDbContext.ApplicationUsers
+                .AsNoTracking()
+                .AnyAsync(e => e.Email == email);
         }
     }
 }
