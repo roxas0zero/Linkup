@@ -11,7 +11,7 @@ namespace Linkup.Services
 {
     public class ApplicationUserService : IApplicationUserService
     {
-        private readonly ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext applicationDbContext;        
 
         public ApplicationUserService(ApplicationDbContext applicationDbContext)
         {
@@ -34,6 +34,9 @@ namespace Linkup.Services
         {
             return await applicationDbContext.ApplicationUsers
                 .AsNoTracking()
+                .Include(u => u.Skills)
+                .Include(u => u.Interests)
+                .Include(u => u.Projects)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
@@ -50,6 +53,50 @@ namespace Linkup.Services
             return await applicationDbContext.ApplicationUsers
                 .AsNoTracking()
                 .AnyAsync(e => e.Email == email);
+        }
+
+        public async Task AddUserSkill(string email, int skillId)
+        {
+            var user = await applicationDbContext.ApplicationUsers
+                .Include(u => u.Skills)
+                .Where(u => u.Email == email)
+                .FirstOrDefaultAsync();
+            var skill = await applicationDbContext.Skills.FindAsync(skillId);
+            user.Skills.Add(skill);
+            await applicationDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserSkill(string email, int skillId)
+        {
+            var user = await applicationDbContext.ApplicationUsers
+                .Include(u => u.Skills)
+                .Where(u => u.Email == email)
+                .FirstOrDefaultAsync();
+            var skill = await applicationDbContext.Skills.FindAsync(skillId);
+            user.Skills.Remove(skill);
+            await applicationDbContext.SaveChangesAsync();
+        }
+
+        public async Task AddUserInterest(string email, int interestId)
+        {
+            var user = await applicationDbContext.ApplicationUsers
+                 .Include(u => u.Interests)
+                 .Where(u => u.Email == email)
+                 .FirstOrDefaultAsync();
+            var interest = await applicationDbContext.Interests.FindAsync(interestId);
+            user.Interests.Add(interest);
+            await applicationDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserInterest(string email, int interestId)
+        {
+            var user = await applicationDbContext.ApplicationUsers
+                .Include(u => u.Interests)
+                .Where(u => u.Email == email)
+                .FirstOrDefaultAsync();
+            var interest = await applicationDbContext.Interests.FindAsync(interestId);
+            user.Interests.Remove(interest);
+            await applicationDbContext.SaveChangesAsync();
         }
     }
 }

@@ -13,5 +13,9 @@ namespace Linkup.Services.Interfaces
         Task<ApplicationUser> GetByEmail(string email);
         Task<List<ApplicationUser>> GetAll();
         Task<bool> Exists(string email);
+        Task AddUserSkill(string email, int skillId);
+        Task DeleteUserSkill(string email, int skillId);
+        Task AddUserInterest(string email, int interestId);
+        Task DeleteUserInterest(string email, int interestId);
     }
 }

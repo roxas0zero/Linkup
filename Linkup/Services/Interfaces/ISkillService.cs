@@ -9,7 +9,6 @@ namespace Linkup.Services.Interfaces
     public interface ISkillService
     {
         Task Create(Skill skill);
-        Task Update(int id, Skill skill);
         Task<List<Skill>> GetAll();
         Task<Skill> GetById(int id);
     }
