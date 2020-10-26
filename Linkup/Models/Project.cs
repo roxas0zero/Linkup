@@ -10,6 +10,7 @@ namespace Linkup.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime DueDate { get; set; }
+        public string CreatedBy { get; set; }
         public List<ApplicationUser> Participants { get; set; }
         public List<Skill> NeededSkills { get; set; }
         public List<Interest> RelatedInterests { get; set; }
