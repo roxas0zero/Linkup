@@ -41,7 +41,8 @@ namespace Linkup.Services
         public async Task<List<Project>> GetAll()
         {
             return await applicationDbContext.Projects
-                .AsNoTracking()
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()                
                 .OrderBy(s => s.Id)
                 .ToListAsync();
         }
@@ -80,7 +81,7 @@ namespace Linkup.Services
         public async Task AddProjectInterest(int projectId, int interestId)
         {
             var project = await applicationDbContext.Projects
-                .Include(p => p.NeededSkills)
+                .Include(p => p.RelatedInterests)
                 .Where(p => p.Id == projectId)
                 .FirstOrDefaultAsync();
             var interest = await applicationDbContext.Interests.FindAsync(interestId);

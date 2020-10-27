@@ -98,5 +98,16 @@ namespace Linkup.Services
             user.Interests.Remove(interest);
             await applicationDbContext.SaveChangesAsync();
         }
+
+        public async Task AddUserProject(string email, int projectId)
+        {
+            var user = await applicationDbContext.ApplicationUsers
+                 .Include(u => u.Projects)
+                 .Where(u => u.Email == email)
+                 .FirstOrDefaultAsync();
+            var project = await applicationDbContext.Projects.FindAsync(projectId);
+            user.Projects.Add(project);
+            await applicationDbContext.SaveChangesAsync();
+        }
     }
 }

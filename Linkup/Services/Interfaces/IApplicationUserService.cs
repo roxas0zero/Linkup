@@ -17,5 +17,6 @@ namespace Linkup.Services.Interfaces
         Task DeleteUserSkill(string email, int skillId);
         Task AddUserInterest(string email, int interestId);
         Task DeleteUserInterest(string email, int interestId);
+        Task AddUserProject(string email, int projectId);
     }
 }

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Linkup.Models;
 using Linkup.Services.Interfaces;
-using Linkup.ViewModels.Profile;
 using Linkup.ViewModels.Project;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace Linkup.Controllers
@@ -19,20 +15,43 @@ namespace Linkup.Controllers
         private readonly IProjectService projectService;
         private readonly ISkillService skillService;
         private readonly IInterestService interestService;
+        private readonly IApplicationUserService applicationUserService;
 
         public ProjectController(IProjectService projectService,
             ISkillService skillService,
-            IInterestService interestService)
+            IInterestService interestService,
+            IApplicationUserService applicationUserService)
         {
             this.projectService = projectService;
             this.skillService = skillService;
             this.interestService = interestService;
+            this.applicationUserService = applicationUserService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> AllInitiatives()
         {
-            return View();
+            var projects = await projectService.GetAll();
+            var model = new ProjectListViewModel
+            {
+                Projects = new List<ProjectViewModel>()
+            };
+
+            foreach (var item in projects)
+            {
+                var createdBy = await applicationUserService.GetByEmail(item.CreatedBy);
+                var project = new ProjectViewModel();
+                project.CreatedBy = $"{createdBy.FirstName} {createdBy.LastName}";
+                project.Description = item.Description;
+                project.Title = item.Title;
+                project.DueDate = item.DueDate;
+                project.Progress = item.Progress;
+                project.Status = item.Status.ToString();
+                project.NeededSkills = item.NeededSkills.Count;
+                model.Projects.Add(project);
+            }
+
+            return View(model);
         }
 
         [HttpGet]
@@ -49,9 +68,11 @@ namespace Linkup.Controllers
                 Title = projectViewModel.Title,
                 Description = projectViewModel.Description,
                 DueDate = projectViewModel.DueDate,
-                CreatedBy = User.Identity.Name
+                CreatedBy = User.Identity.Name,
+
             };
             await projectService.Create(project);
+            await applicationUserService.AddUserProject(User.Identity.Name, project.Id);
             return RedirectToAction(nameof(AddDetails), new { Id = project.Id });
         }
 
@@ -95,7 +116,7 @@ namespace Linkup.Controllers
                     Id = i.Id,
                     Interest = i.Name
                 }).ToList()
-            };            
+            };
             return View(model);
         }
 
