@@ -135,7 +135,7 @@ a:focus {
     left: 0;
     height: 100vh;
     z-index: 999;
-    background: #57c24e;
+    background: #97d638;
     color: #fff;
     transition: all 0.3s;
 }
@@ -166,7 +166,7 @@ a:focus {
     }
 
         #sidebar ul li a:hover {
-            color: #57c24e;
+            color: #97d638;
             background: #fff;
         }
 

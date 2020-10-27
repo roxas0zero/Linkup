@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <form method="post" asp-action="AddInterest" class="form-inline">
             <div class="form-group mr-4">
-                <select class="form-control" asp-for="SelectedInterest" asp-items="Model.Interests"></select>
+                <select class="form-control select2" asp-for="SelectedInterest" asp-items="Model.Interests"></select>
                 <span asp-validation-for="SelectedInterest" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-success">Add Interest</button>
@@ -45,3 +45,13 @@
         </table>
     </div>
 </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+    </script>
+}

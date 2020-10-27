@@ -13,18 +13,18 @@
                     @{
                         var image = "/img/";
                         if (item.Status == Linkup.Enums.Status.Initialization)
-                            image += "stage1-c.png";
+                            image += "stage0-c.png";
                         if (item.Status == Linkup.Enums.Status.TeamBuilding)
-                            image += "stage2-c.png";
+                            image += "stage1-c.png";
                         if (item.Status == Linkup.Enums.Status.Execution)
-                            image += "stage3-c.png";
+                            image += "stage2-c.png";
                         if (item.Status == Linkup.Enums.Status.Completed)
-                            image += "stage4-c.png";
+                            image += "stage3-c.png";
 
                         var progress = "progress" + item.ProjectId;
                         progressList.Add(progress);
                     }
-                    <img class="float-right" src="@image" />
+                    <img class="float-right" src="@image" width="77" />
                     <h5 class="card-title">@item.Title</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Created By @item.CreatedBy</h6>
                     <div id="@progress" value="@item.Progress">Progress</div>

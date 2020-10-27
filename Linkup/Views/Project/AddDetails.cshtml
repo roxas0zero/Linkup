@@ -47,7 +47,7 @@
                 <form method="post" asp-action="AddSkill" class="form-inline">
                     <div class="form-group mr-4">
                         <input type="hidden" asp-for="ProjectId" />
-                        <select class="form-control" asp-for="SelectedSkill" asp-items="Model.SkillsList"></select>
+                        <select class="form-control select2" asp-for="SelectedSkill" asp-items="Model.SkillsList"></select>
                         <span asp-validation-for="SelectedSkill" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-success">Add Skill</button>
@@ -68,18 +68,18 @@
                     <tbody>
                         @foreach (var item in Model.NeededSkills)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(m => item.Skill)
-                                </td>
-                                <td>
-                                    <form method="post" asp-action="DeleteSkill" class="ml-5">
-                                        <input type="hidden" asp-for="ProjectId" />
-                                        <input type="hidden" asp-for="SelectedSkill" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger btn-sm float-right">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Skill)
+                            </td>
+                            <td>
+                                <form method="post" asp-action="DeleteSkill" class="ml-5">
+                                    <input type="hidden" asp-for="ProjectId" />
+                                    <input type="hidden" asp-for="SelectedSkill" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm float-right">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -94,7 +94,7 @@
                 <form method="post" asp-action="AddInterest" class="form-inline">
                     <div class="form-group mr-4">
                         <input type="hidden" asp-for="ProjectId" />
-                        <select class="form-control" asp-for="SelectedInterest" asp-items="Model.InterestList"></select>
+                        <select class="form-control select2" asp-for="SelectedInterest" asp-items="Model.InterestList"></select>
                         <span asp-validation-for="SelectedInterest" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-success">Add Interest</button>
@@ -115,18 +115,18 @@
                     <tbody>
                         @foreach (var item in Model.RelatedInterests)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(m => item.Interest)
-                                </td>
-                                <td>
-                                    <form method="post" asp-action="DeleteInterest" class="ml-5">
-                                        <input type="hidden" asp-for="ProjectId" />
-                                        <input type="hidden" asp-for="SelectedInterest" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger btn-sm float-right">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Interest)
+                            </td>
+                            <td>
+                                <form method="post" asp-action="DeleteInterest" class="ml-5">
+                                    <input type="hidden" asp-for="ProjectId" />
+                                    <input type="hidden" asp-for="SelectedInterest" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm float-right">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -140,3 +140,14 @@
 <div>
     <a asp-action="Initiatives" class="btn btn-primary">Finish</a>
 </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+    </script>
+}
+

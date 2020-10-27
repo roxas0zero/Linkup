@@ -35,15 +35,15 @@ namespace Linkup.Controllers
 
             if (string.IsNullOrEmpty(filter))
                 projects = await projectService.GetAll();
-            else if (filter.ToUpper() == "NEW")
+            else if (filter.ToUpper() == "N")
                 projects = await projectService.GetNew();
-            else if(filter.ToUpper() == "COMPLETED")
+            else if(filter.ToUpper() == "C")
                 projects = await projectService.GetCompleted();
-            else if(filter.ToUpper() == "RECRUITING")
+            else if(filter.ToUpper() == "R")
                 projects = await projectService.GetRecruting();
-            else if(filter.ToUpper() == "INPROGRESS")
+            else if(filter.ToUpper() == "I")
                 projects = await projectService.GetInProgress();
-            else if (filter.ToUpper() == "MY")
+            else if (filter.ToUpper() == "M")
                 projects = await projectService.GetByOwner(User.Identity.Name);
 
             var model = new ProjectListViewModel

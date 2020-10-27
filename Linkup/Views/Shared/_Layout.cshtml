@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="~/lib/rangeslider/rangeslider.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -41,22 +42,22 @@
                             <a asp-controller="Project" asp-action="Create">Create Initiative</a>
                         </li>
                         <li>
-                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="MY">My Initiatives</a>
+                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="M">My Initiatives</a>
                         </li>
                         <li>
                             <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="">All Initiatives</a>
                         </li>
                         <li>
-                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="NEW">New Initiatives</a>
+                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="N">New Initiatives</a>
                         </li>
                         <li>
-                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="RECRUTING">Recruting Initiatives</a>
+                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="R">Recruting Initiatives</a>
                         </li>
                         <li>
-                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="INPROGRESS">In Progress Initiatives</a>
+                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="I">In Progress Initiatives</a>
                         </li>
                         <li>
-                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="COMPLETED">Completed Initiatives</a>
+                            <a asp-controller="Project" asp-action="Initiatives" asp-route-filter="C">Completed Initiatives</a>
                         </li>
                     </ul>
                 </li>
@@ -76,6 +77,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/lib/rangeslider/rangeslider.js"></script>
     <script src="~/lib/progressbar/progressbar.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
