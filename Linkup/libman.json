@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "rangeslider.js@2.3.3",
+      "destination": "wwwroot/lib/rangeslider"
+    },
+    {
+      "library": "progressbar.js@1.1.0",
+      "destination": "wwwroot/lib/progressbar"
+    }
+  ]
+}

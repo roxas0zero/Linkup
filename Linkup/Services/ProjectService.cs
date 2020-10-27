@@ -99,5 +99,55 @@ namespace Linkup.Services
             project.RelatedInterests.Remove(interest);
             await applicationDbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Project>> GetNew()
+        {
+            return await applicationDbContext.Projects
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()
+                .Where(p => p.Status == Enums.Status.Initialization)
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<Project>> GetCompleted()
+        {
+            return await applicationDbContext.Projects
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()
+                .Where(p => p.Status == Enums.Status.Completed)
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<Project>> GetRecruting()
+        {
+            return await applicationDbContext.Projects
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()
+                .Where(p => p.Status == Enums.Status.TeamBuilding)
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<Project>> GetInProgress()
+        {
+            return await applicationDbContext.Projects
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()
+                .Where(p => p.Status == Enums.Status.Execution)
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<Project>> GetByOwner(string email)
+        {
+            return await applicationDbContext.Projects
+                .Include(p => p.NeededSkills)
+                .AsNoTracking()
+                .Where(p => p.CreatedBy == email)
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+        }
     }
 }

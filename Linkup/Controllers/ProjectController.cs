@@ -29,9 +29,23 @@ namespace Linkup.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllInitiatives()
+        public async Task<IActionResult> Initiatives(string filter)
         {
-            var projects = await projectService.GetAll();
+            List<Project> projects = new List<Project>();
+
+            if (string.IsNullOrEmpty(filter))
+                projects = await projectService.GetAll();
+            else if (filter.ToUpper() == "NEW")
+                projects = await projectService.GetNew();
+            else if(filter.ToUpper() == "COMPLETED")
+                projects = await projectService.GetCompleted();
+            else if(filter.ToUpper() == "RECRUITING")
+                projects = await projectService.GetRecruting();
+            else if(filter.ToUpper() == "INPROGRESS")
+                projects = await projectService.GetInProgress();
+            else if (filter.ToUpper() == "MY")
+                projects = await projectService.GetByOwner(User.Identity.Name);
+
             var model = new ProjectListViewModel
             {
                 Projects = new List<ProjectViewModel>()
@@ -40,14 +54,18 @@ namespace Linkup.Controllers
             foreach (var item in projects)
             {
                 var createdBy = await applicationUserService.GetByEmail(item.CreatedBy);
-                var project = new ProjectViewModel();
-                project.CreatedBy = $"{createdBy.FirstName} {createdBy.LastName}";
-                project.Description = item.Description;
-                project.Title = item.Title;
-                project.DueDate = item.DueDate;
-                project.Progress = item.Progress;
-                project.Status = item.Status.ToString();
-                project.NeededSkills = item.NeededSkills.Count;
+                var project = new ProjectViewModel
+                {
+                    ProjectId = item.Id,
+                    CreatedBy = $"{createdBy.FirstName} {createdBy.LastName}",
+                    Description = item.Description,
+                    Title = item.Title,
+                    DueDate = item.DueDate,
+                    Progress = item.Progress,
+                    Status = item.Status,
+                    NeededSkills = item.NeededSkills.Count
+                };
+
                 model.Projects.Add(project);
             }
 

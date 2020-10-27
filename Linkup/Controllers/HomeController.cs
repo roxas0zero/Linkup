@@ -32,7 +32,7 @@ namespace Linkup.Controllers
                 await applicationUserService.Create(newUser);
             }
 
-            return View();
+            return RedirectToAction("Initiatives", "Project");
         }
 
         public IActionResult About()

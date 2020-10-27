@@ -1,0 +1,83 @@
+﻿@model Linkup.ViewModels.Project.ProjectListViewModel
+
+@{ 
+    var progressList = new List<string>();
+}
+
+<div class="row">
+    @foreach (var item in Model.Projects)
+    {
+        <div class="col-lg-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header">
+                    @{
+                        var image = "/img/";
+                        if (item.Status == Linkup.Enums.Status.Initialization)
+                            image += "stage1-c.png";
+                        if (item.Status == Linkup.Enums.Status.TeamBuilding)
+                            image += "stage2-c.png";
+                        if (item.Status == Linkup.Enums.Status.Execution)
+                            image += "stage3-c.png";
+                        if (item.Status == Linkup.Enums.Status.Completed)
+                            image += "stage4-c.png";
+
+                        var progress = "progress" + item.ProjectId;
+                        progressList.Add(progress);
+                    }
+                    <img class="float-right" src="@image" />
+                    <h5 class="card-title">@item.Title</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Created By @item.CreatedBy</h6>
+                    <div id="@progress" value="@item.Progress">Progress</div>
+                    <div class="float-left">
+                        <img src="~/img/unnamed.png" width="25" /> @item.NeededSkills Roles Required
+                    </div>
+                    <div class="float-right">
+                        <img src="~/img/img_222368.png" width="21" /> Due By @item.DueDate.ToShortDateString()
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@item.Description</p>
+                </div>
+                <div class="text-center card-footer">
+                    <a href="#" class="btn btn-success">More</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var startColor = '#ED6A5A';
+        var endColor = '#a3df49';
+
+        var progressIds = @Html.Raw(Json.Serialize(progressList));
+
+        function createProgress(divId) {
+
+            var bar = new ProgressBar.Line(document.getElementById(divId), {
+                strokeWidth: 2,
+                easing: 'easeInOut',
+                duration: 1400,
+                color: '#FFEA82',
+                trailColor: '#eee',
+                trailWidth: 1,
+                svgStyle: { width: '100%', height: '100%' },
+                step: (state, bar) => {
+                    bar.path.setAttribute('stroke', state.color);
+                }
+            });
+
+            var value = ($(document.getElementById(divId)).attr('value') / 100);
+            bar.animate(value, {
+                from: { color: startColor },
+                to: { color: endColor }
+            });
+        }
+
+        for (var i = 0; i < progressIds.length; i++) {
+            createProgress(progressIds[i]);
+        }
+    </script>
+}
